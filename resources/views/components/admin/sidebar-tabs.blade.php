@@ -1,0 +1,1 @@
+<a href="{{$href}}"><i class="bi  me-2 {{$icon}}"></i>{{$text}}</a>
