@@ -21,7 +21,7 @@
         <x-admin.sidebar-tabs href="{{route('dashboard.index')}}" text='Users' icon='bi-people' />
         <x-admin.sidebar-tabs href="{{route('dashboard.index')}}" text='Analytics' icon='bi-bar-chart' />
         <x-admin.sidebar-tabs href="{{route('dashboard.setting')}}" text='Settings' icon='bi-gear' />
-        <x-admin.sidebar-tabs href="{{route('dashboard.index')}}" text='Logout' icon='bi-box-arrow-right' />
+        <x-admin.sidebar-tabs href="{{route('login')}}" text='Logout' icon='bi-box-arrow-right' />
     </div>
 
     <!-- Top Navbar -->
