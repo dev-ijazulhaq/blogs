@@ -1,4 +1,4 @@
-@extends('layout/mainLayout')
+@extends('layouts/app')
 @section('mainContent')
 <!-- Login Section -->
 <div class="card login-card">
@@ -52,7 +52,7 @@
 
         <div class="text-center mt-4">
             <p class="mb-0">Don't have an account?
-                <a href="{{route('registration')}}" class="text-decoration-none text-primary fw-semibold">Register</a>
+                <a href="{{route('auth.register')}}" class="text-decoration-none text-primary fw-semibold">Register</a>
             </p>
         </div>
     </div>

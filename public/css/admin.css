@@ -61,3 +61,8 @@ body {
         margin-left: 0;
     }
 }
+
+.validationError {
+    color: #dc3545;
+    font-size: 12px;
+}

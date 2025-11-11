@@ -1,4 +1,4 @@
-@extends('dashboard/layouts/mainLayout')
+@extends('layouts/admin')
 
 @section('pageName') Blogify Home @endSection
 

@@ -1,4 +1,4 @@
-@extends('layout/mainLayout')
+@extends('layouts.app')
 
 @section('mainContent')
 
@@ -68,7 +68,7 @@
 
             <div class="text-center mt-4">
                 <p class="mb-0">Already have an account?
-                    <a href="{{ route('login') }}" class="text-decoration-none text-primary fw-semibold">Login</a>
+                    <a href="{{ route('auth.login') }}" class="text-decoration-none text-primary fw-semibold">Login</a>
                 </p>
             </div>
         </div>

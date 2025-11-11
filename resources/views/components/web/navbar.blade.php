@@ -7,11 +7,11 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link active" href="{{route('home')}}">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{route('categories')}}">Categories</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{route('about')}}">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{route('contact')}}">Contact</a></li>
-                    <li class="nav-item"><a class="btn btn-sm btn-primary mt-1" href="{{ route('dashboard.index') }}">Login</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="{{route('web.home')}}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{route('web.categories')}}">Categories</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{route('web.about')}}">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{route('web.contact')}}">Contact</a></li>
+                    <li class="nav-item"><a class="btn btn-sm btn-primary mt-1" href="{{ route('admin.index') }}">Login</a></li>
                 </ul>
             </div>
         </div>
