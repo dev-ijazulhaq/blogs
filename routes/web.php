@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\PermissionController;
+use App\Http\Controllers\Admin\RoleController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('/')->name('web.')->group(function () {
@@ -20,4 +21,5 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::view('/dashboard', 'pages.admin.dashboard')->name('index');
 
     Route::resource('permissions', PermissionController::class);
+    Route::resource('/roles', RoleController::class);
 });

@@ -5,34 +5,13 @@ namespace App\Repositories\Eloquent;
 use App\Repositories\Interfaces\PermissionRepositoryInterface;
 use Spatie\Permission\Models\Permission;
 
-class PermissionRepository implements PermissionRepositoryInterface
+class PermissionRepository extends BaseRepository implements PermissionRepositoryInterface
 {
-    public function getAll()
+    /**
+     * Create a new class instance.
+     */
+    public function __construct(Permission $model)
     {
-        return Permission::all();
-    }
-
-    public function storePermission(array $data)
-    {
-        return Permission::create($data);
-    }
-
-    public function getPermission(string $id)
-    {
-        return Permission::findOrFail($id);
-    }
-
-    public function updatePermission(array $data, string $id)
-    {
-        $permission = Permission::find($id);
-        $permission->update($data);
-        return $permission;
-    }
-
-    public function destroyPermission(string $id)
-    {
-        $permission = Permission::find($id);
-        $permission->delete();
-        return $permission;
+        parent::__construct($model);
     }
 }

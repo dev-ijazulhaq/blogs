@@ -38,12 +38,12 @@ $("#addPermission").on("click",function(e){
 
 $(document).on('click','.getPermission',function(e){
     e.preventDefault();
-    var permissionId = $(this).attr('permissionId');
+    const permissionId = $(this).attr('permissionId');
     $.ajax({
         method: 'GET',
         url: `permissions/${permissionId}`,
         success:function(response){
-            let form = $("#updatePermissionForm");
+            const form = $("#updatePermissionForm");
             form.find("input[name='id']").val(response.data.id);
             form.find("input[name='name']").val(response.data.name);
             form.find("select[name='guard_name']").val(response.data.guard_name);
@@ -61,10 +61,10 @@ $(document).on('click','#updatePermission',function(e){
     e.preventDefault();
     $(".updateResponse").text('');
     $(".footerBtn").show();
-    let form = $("#updatePermissionForm");
-    let formData = form.serialize();
-    let permissionId = form.find("input[name='id']").val();
-    let url =  `permissions/${permissionId}`;
+    const form = $("#updatePermissionForm");
+    const formData = form.serialize();
+    const permissionId = form.find("input[name='id']").val();
+    const url =  `permissions/${permissionId}`;
     $.ajax({
         method: 'PATCH',
         url: url,
@@ -93,18 +93,18 @@ $(document).on('click','#updatePermission',function(e){
 
 $(document).on('click','.showDeletePermission',function(e){
     e.preventDefault();
-    var permissionId = $(this).attr('permissionId');
-    var form = $("#deletePermissionForm");
+    const permissionId = $(this).attr('permissionId');
+    const form = $("#deletePermissionForm");
     form.find("input[name='id']").val(permissionId);
     $("#permissionDeleteModal").modal('show');
 });
 
 $(document).on('click','#deletePermission',function(e){
     e.preventDefault();
-    var form = $("#deletePermissionForm");
-    var formData = form.serialize();
-    var permissionId = form.find("input[name='id']").val();
-    var url = `permissions/${permissionId}`;
+    const form = $("#deletePermissionForm");
+    const formData = form.serialize();
+    const permissionId = form.find("input[name='id']").val();
+    const url = `permissions/${permissionId}`;
     $.ajax({
         method: 'DELETE',
         url: url,
@@ -119,6 +119,28 @@ $(document).on('click','#deletePermission',function(e){
         error:function(xhr){
             console.log(xhr.responseJSON);
             alert('Something went wrong, please try again litter');
+        }
+    });
+});
+
+
+/// Roles
+
+$(document).on('click','#addNewRole',function(e){
+    e.preventDefault();
+    const formData = $("#createRoleForm").serialize();
+    console.log(formData);
+    $.ajax({
+        method: 'POST',
+        url: `roles`,
+        data: formData,
+        success:function(response)
+        {
+            console.log(response);
+        },
+        error:function(xhr)
+        {
+            console.log(xhr.responseText);
         }
     });
 });

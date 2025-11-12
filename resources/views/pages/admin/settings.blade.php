@@ -111,41 +111,40 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <form id='createRoleForm'>
+                        @csrf
                         <div class="mb-3">
-                            <label for="recipient-name" class="col-form-label">Recipient:</label>
-                            <input type="text" class="form-control" id="recipient-name">
+                            <label for="role-name" class="col-form-label">Role:</label>
+                            <input type="text" class="form-control" id="role-name" name="name">
+                        </div>
+                        <div class="mb-3">
+                            <label for="guard-name" class="col-form-label">Guard name</label>
+                            <select class="form-control" name="guard_name" id="">
+                                <option value="0">Select Guard</option>
+                                <option value="web">WEB</option>
+                                <option value="API">API</option>
+                            </select>
                         </div>
                         <div class="mb-3">
                             <label for="message-text" class="col-form-label">Assign Permissions:</label>
                             <div class="row">
-                                <div class="col-4">
-                                    <input type="checkbox" class="form-check-input">
-                                    <label>Manage Setting</label>
+                                @forelse($permissions as $index => $permission)
+                                <div class="col-6">
+                                    <input type="checkbox" class="form-check-input" name="permissions" value="{{$permission->name}}">
+                                    <label>{{$permission->name}}</label>
                                 </div>
-                                <div class="col-4">
-                                    <input type="checkbox" class="form-check-input">
-                                    <label>Manage Setting</label>
+                                @empty
+                                <div class="col-12">
+                                    <p>Add the permission first</p>
                                 </div>
-                                <div class="col-4">
-                                    <input type="checkbox" class="form-check-input">
-                                    <label>Manage Setting</label>
-                                </div>
-                                <div class="col-4">
-                                    <input type="checkbox" class="form-check-input">
-                                    <label>Manage Setting</label>
-                                </div>
-                                <div class="col-4">
-                                    <input type="checkbox" class="form-check-input">
-                                    <label>Manage Setting</label>
-                                </div>
+                                @endForElse
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Send message</button>
+                    <button type="button" class="btn btn-primary" id='addNewRole'>Add Role</button>
                 </div>
             </div>
         </div>

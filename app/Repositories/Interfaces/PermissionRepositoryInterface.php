@@ -2,11 +2,7 @@
 
 namespace App\Repositories\Interfaces;
 
-interface PermissionRepositoryInterface
+interface PermissionRepositoryInterface extends BaseRepositoryInterface
 {
-    public function getAll();
-    public function storePermission(array $data);
-    public function getPermission(string $id);
-    public function updatePermission(array $data, string $id);
-    public function destroyPermission(string $id);
+    //
 }
