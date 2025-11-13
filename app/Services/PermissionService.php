@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Repositories\Interfaces\PermissionRepositoryInterface;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Spatie\Permission\Models\Permission;
 
 class PermissionService
@@ -17,7 +17,7 @@ class PermissionService
         $this->permission = $permission;
     }
 
-    public function all(): Collection
+    public function all(): LengthAwarePaginator
     {
         return $this->permission->all();
     }

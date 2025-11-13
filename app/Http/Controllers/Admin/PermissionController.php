@@ -6,13 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\PermissionRequest;
 use App\Http\Requests\UpdatePermissionRequest;
 use App\Services\PermissionService;
+use App\Traits\ControllerResponse;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\View\View;
-use Spatie\Permission\Models\Permission;
 
 class PermissionController extends Controller
 {
+    use ControllerResponse;
+
     protected PermissionService $permissionService;
 
     public function __construct(PermissionService $permissionService)
@@ -35,16 +36,9 @@ class PermissionController extends Controller
     {
         try {
             $this->permissionService->create($request->validated());
-            return response()->json([
-                'success' => true,
-                'message' => 'Permission successfully created',
-            ], 201);
+            return $this->successResponse('Permission successfully created', null, 201);
         } catch (\Throwable $th) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Permission creating failed',
-                'errors' => $th->getMessage()
-            ], 500);
+            return $this->errorResponse('Permission creating failed', null, 501);
         }
     }
 
@@ -55,17 +49,9 @@ class PermissionController extends Controller
     {
         try {
             $permission = $this->permissionService->getPermission($id);
-            return response()->json([
-                'success' => true,
-                'message' => 'Permission retrieved successfully',
-                'data' => $permission
-            ], 200);
+            return $this->successResponse('Permission retrieved successfully', $permission, 200);
         } catch (\Throwable $th) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Permission retrieving failed',
-                'errors' => $th->getMessage()
-            ], 500);
+            return $this->errorResponse('Permission retrieving failed', $th->getMessage(), 500);
         }
     }
 
@@ -76,17 +62,9 @@ class PermissionController extends Controller
     {
         try {
             $permission = $this->permissionService->update($request->validated(), $id);
-            return response()->json([
-                'success' => true,
-                'message' => 'Permission successfully updated',
-                'data' => $permission
-            ], 200);
+            return $this->successResponse('Permission successfully updated', $permission, 200);
         } catch (\Throwable $th) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Permission updating failed',
-                'errors' => $th->getMessage()
-            ], 500);
+            return $this->errorResponse('Permission updating failed', $th->getMessage(), 500);
         }
     }
 
@@ -97,16 +75,9 @@ class PermissionController extends Controller
     {
         try {
             $permission = $this->permissionService->delete($id);
-            return response()->json([
-                'success' => true,
-                'message' => 'Permission successfully deleted',
-            ], 200);
+            return $this->successResponse('Permission successfully deleted', null, 200);
         } catch (\Throwable $th) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Permission deleting failed',
-                'error' => $th->getMessage()
-            ], 500);
+            return $this->errorResponse('Permission deleting failed', $th->getMessage(), 500);
         }
     }
 }

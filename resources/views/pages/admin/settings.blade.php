@@ -183,6 +183,9 @@
                     @endforelse
                 </tbody>
             </table>
+            <div class="pt-3 px-3">
+                {{$permissions->links()}}
+            </div>
         </div>
     </div>
 
