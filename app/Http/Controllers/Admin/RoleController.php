@@ -6,11 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\RoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
 use App\Services\RoleService;
-use Illuminate\View\View;
-use Spatie\Permission\Models\Role;
+use App\Traits\ControllerResponse;
 
 class RoleController extends Controller
 {
+    use ControllerResponse;
     protected RoleService $roleService;
 
     public function __construct(RoleService $roleService)
@@ -20,30 +20,18 @@ class RoleController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): View
-    {
-        $roles = $this->roleService->getAll();
-        return view('pages.admin.settings', compact('roles'));
-    }
 
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(RoleRequest $request): Role
+    public function store(RoleRequest $request)
     {
         try {
             $this->roleService->create($request->validated());
-            return response()->json([
-                'success' => true,
-                'message' => 'Role successfully created',
-            ], 201);
+            return $this->successResponse('Role successfully created', null, 201);
         } catch (\Throwable $th) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Role creating failed',
-                'errors' => $th->getMessage()
-            ], 500);
+            return $this->errorResponse('Role creating failed', $th->getMessage(), 200);
         }
     }
 
@@ -51,9 +39,14 @@ class RoleController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function show(string $id)
     {
-        //
+        try {
+            $role = $this->roleService->getRole($id);
+            return $this->successResponse('Role successfully retrieved', $role, 200);
+        } catch (\Throwable $th) {
+            return $this->errorResponse('Retrieving role failed', $th->getMessage(), 500);
+        }
     }
 
     /**
@@ -61,7 +54,12 @@ class RoleController extends Controller
      */
     public function update(UpdateRoleRequest $request, string $id)
     {
-        //
+        try {
+            $this->roleService->update($request->validated(), $id);
+            return $this->successResponse('Role successfully updated', null, 200);
+        } catch (\Throwable $th) {
+            return $this->errorResponse('Role updating failed', $th->getMessage(), 500);
+        }
     }
 
     /**
@@ -69,6 +67,11 @@ class RoleController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $this->roleService->delete($id);
+            return $this->successResponse('Role successfully deleted', null, 200);
+        } catch (\Throwable $th) {
+            return $this->errorResponse('Role deleting failed', null, 500);
+        }
     }
 }

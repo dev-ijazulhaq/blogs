@@ -7,8 +7,6 @@ use App\Http\Requests\PermissionRequest;
 use App\Http\Requests\UpdatePermissionRequest;
 use App\Services\PermissionService;
 use App\Traits\ControllerResponse;
-use Illuminate\Http\JsonResponse;
-use Illuminate\View\View;
 
 class PermissionController extends Controller
 {
@@ -20,19 +18,11 @@ class PermissionController extends Controller
     {
         $this->permissionService = $permissionService;
     }
-    /**
-     * Display a listing of the resource.
-     */
-    public function index(): View
-    {
-        $permissions = $this->permissionService->all();
-        return view('pages.admin.settings', compact('permissions'));
-    }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(PermissionRequest $request): JsonResponse
+    public function store(PermissionRequest $request)
     {
         try {
             $this->permissionService->create($request->validated());
@@ -45,7 +35,7 @@ class PermissionController extends Controller
     /**
      * Show the form for show the specified resource.
      */
-    public function show(string|int $id): JsonResponse
+    public function show(string|int $id)
     {
         try {
             $permission = $this->permissionService->getPermission($id);
@@ -58,7 +48,7 @@ class PermissionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatePermissionRequest $request, string|int $id): JsonResponse
+    public function update(UpdatePermissionRequest $request, string|int $id)
     {
         try {
             $permission = $this->permissionService->update($request->validated(), $id);
@@ -71,7 +61,7 @@ class PermissionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string|int $id): JsonResponse
+    public function destroy(string|int $id)
     {
         try {
             $permission = $this->permissionService->delete($id);

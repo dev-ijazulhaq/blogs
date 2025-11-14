@@ -17,24 +17,24 @@ class RoleService
         $this->role = $role;
     }
 
-    public function getAll(): LengthAwarePaginator
+    public function all(): LengthAwarePaginator
     {
         return $this->role->all();
     }
 
     public function create(array $attributes): Role
     {
-        return $this->role->create($attributes);
+        return $this->role->createRoleAssignPermission($attributes);
     }
 
     public function getRole(string|int $id): Role
     {
-        return $this->role->findOrFail($id);
+        return $this->role->findOrFailWithPermissions($id);
     }
 
     public function update(array $attributes, string|int $id): Role
     {
-        return $this->update($attributes, $id);
+        return $this->role->updateRoleWithPermissions($attributes, $id);
     }
 
     public function delete(string|int $id): bool

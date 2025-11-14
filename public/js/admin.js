@@ -128,19 +128,128 @@ $(document).on('click','#deletePermission',function(e){
 
 $(document).on('click','#addNewRole',function(e){
     e.preventDefault();
+    $(".validationError").text('');
     const formData = $("#createRoleForm").serialize();
-    console.log(formData);
     $.ajax({
         method: 'POST',
-        url: `roles`,
+        url : `roles`,
         data: formData,
         success:function(response)
         {
-            console.log(response);
+            $(".roleInsertResponse").text(response.message);
+            $(".footerBtn").hide();
+            setTimeout(() => {
+                location.reload();
+            }, 2000);
+        },
+        error:function(xhr)
+        {
+            console.log(xhr.responseJSON.errors);
+            if(xhr.status == 422){
+                var errors = xhr.responseJSON.errors;
+                $("#roleNameResponse").text(errors.name);
+                $("#roleGuardResponse").text(errors.guard_name);
+                $("#assignPermissionResponse").text(errors.permissions);
+            }else{
+                console.log(xhr.responseJSON);
+            }
+        }
+    });
+});
+
+$(document).on('click','.showUpdateRoleForm',function(){
+    const roleId = $(this).attr('roleId');
+    const url = `roles/${roleId}`;
+    $.ajax({
+        method: 'GET',
+        url: url,
+        success:function(response)
+        {
+            const form = $("#updateRoleForm");
+            form.find("input[name='id']").val(response.data.id);
+            form.find("input[name='name']").val(response.data.name);
+            form.find("select[name='guard_name']").val(response.data.guard_name);
+            form.find("input[name='permissions[]']").prop('checked', false);
+
+            const permissions = response.data.permissions.map(p => p.name);
+            form.find("input[name='permissions[]']").each(function (){
+                if(permissions.includes($(this).val())){
+                    $(this).prop('checked',true);
+                }
+            });
+
+            $("#updateRoleModal").modal('show');
+        },
+        error:function(xhr)
+        {
+            alert('Something went wrong.')
+            console.log(xhr.responseJSON);
+        }
+    });
+});
+
+$(document).on('click','#updateRole',function(){
+    $(".validationError").text('');
+    const form = $("#updateRoleForm");
+    const formData = form.serialize();
+    const roleId = form.find("input[name='id']").val();
+    const url = `roles/${roleId}`;
+    $.ajax({
+        method: 'PATCH',
+        url: url,
+        data: formData,
+        success:function(response)
+        {
+            $(".footerBtn").hide();
+            $(".roleUpdateResponse").text(response.message);
+            setTimeout(() => {
+                location.reload();
+            }, 2000);
+        },
+        error:function(xhr)
+        {
+            if(xhr.status == 422)
+            {
+                const errors = xhr.responseJSON.errors;
+                $("#updateRoleNameResponse").text(errors.name);
+                $("#updateRoleGuardResponse").text(errors.guard_name);
+                $("#updateAssignPermissionResponse").text(errors.permissions);
+            }else{
+                console.log(xhr.responseText);
+                alert("Something went wrong.");
+            }
+        }
+    });
+});
+
+$(document).on('click','.showDeleteRoleForm',function(){
+    const roleId = $(this).attr('roleId');
+    const form = $("#deleteRoleForm");
+    form.find("input[name='id']").val(roleId);
+    $("#roleDeleteModal").modal('show');
+});
+
+$(document).on('click','#deleteRole',function(){
+    const form = $("#deleteRoleForm");
+    const formData = form.serialize();
+    const roleId = form.find("input[name='id']").val();
+    const url = `roles/${roleId}`;
+    $.ajax({
+        method: 'DELETE',
+        url: url,
+        data: formData,
+        success:function(response)
+        {
+            $(".footerBtn").hide();
+            $(".deleteRoleResponse").text(response.message);
+            setTimeout( () => {
+                location.reload();
+            }, 2000);
         },
         error:function(xhr)
         {
             console.log(xhr.responseText);
+            alert('Something went wrong.');
         }
     });
 });

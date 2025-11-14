@@ -22,18 +22,10 @@ class RoleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => [
-                'required',
-                'string',
-                'max:100',
-                'unique:roles,name',
-            ],
-            'guard_name' => [
-                'required',
-                'string',
-                'max:50',
-                'in:web,api', // 👈 Optional: restrict guards if you only use specific ones
-            ],
+            'name' => ['required', 'string', 'max:100', 'unique:roles,name'],
+            'guard_name' => ['required', 'string', 'max:50', 'in:web,api'],
+            'permissions' => ['nullable', 'array'],
+            'permissions.*' => ['string', 'exists:permissions,name'],
         ];
     }
 }

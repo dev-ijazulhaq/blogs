@@ -115,10 +115,12 @@
                         @csrf
                         <div class="mb-3">
                             <label for="role-name" class="col-form-label">Role:</label>
+                            <label for="" class="validationError" id='roleNameResponse'></label>
                             <input type="text" class="form-control" id="role-name" name="name">
                         </div>
                         <div class="mb-3">
                             <label for="guard-name" class="col-form-label">Guard name</label>
+                            <label for="" class="validationError" id='roleGuardResponse'></label>
                             <select class="form-control" name="guard_name" id="">
                                 <option value="0">Select Guard</option>
                                 <option value="web">WEB</option>
@@ -127,10 +129,11 @@
                         </div>
                         <div class="mb-3">
                             <label for="message-text" class="col-form-label">Assign Permissions:</label>
+                            <label for="" class="validationError" id='assignPermissionResponse'></label>
                             <div class="row">
                                 @forelse($permissions as $index => $permission)
                                 <div class="col-6">
-                                    <input type="checkbox" class="form-check-input" name="permissions" value="{{$permission->name}}">
+                                    <input type="checkbox" class="form-check-input" name="permissions[]" value="{{$permission->name}}">
                                     <label>{{$permission->name}}</label>
                                 </div>
                                 @empty
@@ -143,13 +146,93 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id='addNewRole'>Add Role</button>
+                    <div class="footerBtn">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id='addNewRole'>Add Role</button>
+                    </div>
                 </div>
+                <div class="roleInsertResponse text-center text-success pb-4 insertResponse"></div>
             </div>
         </div>
     </div>
-    <!-- Recent Posts Table -->
+    <div class="modal fade" id="updateRoleModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="updateRoleModalLabel">Edit role</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id='updateRoleForm'>
+                        @csrf
+                        <input type="hidden" class="updateRoleId" name="id" value="">
+                        <div class="mb-3">
+                            <label for="role-name" class="col-form-label">Role:</label>
+                            <label for="" class="validationError" id='updateRoleNameResponse'></label>
+                            <input type="text" class="form-control" id="role-name" name="name">
+                        </div>
+                        <div class="mb-3">
+                            <label for="guard-name" class="col-form-label">Guard name</label>
+                            <label for="" class="validationError" id='updateRoleGuardResponse'></label>
+                            <select class="form-control" name="guard_name" id="">
+                                <option value="0">Select Guard</option>
+                                <option value="web">WEB</option>
+                                <option value="API">API</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="message-text" class="col-form-label">Assign Permissions:</label>
+                            <label for="" class="validationError" id='updateAssignPermissionResponse'></label>
+                            <div class="row">
+                                @forelse($permissions as $index => $permission)
+                                <div class="col-6">
+                                    <input type="checkbox" class="form-check-input" name="permissions[]" value="{{$permission->name}}">
+                                    <label>{{$permission->name}}</label>
+                                </div>
+                                @empty
+                                <div class="col-12">
+                                    <p>Add the permission first</p>
+                                </div>
+                                @endForElse
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <div class="footerBtn">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id='updateRole'>Add Role</button>
+                    </div>
+                </div>
+                <div class="roleUpdateResponse text-center text-success pb-4 insertResponse"></div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="roleDeleteModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="">Delete role</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id='deleteRoleForm'>
+                        @csrf
+                        <input type="hidden" class="deleteRoleId" name="id">
+                    </form>
+                    <p class="text-center">Are you sure want to delete this role?</p>
+                </div>
+                <div class="modal-footer">
+                    <div class="footerBtn">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id='deleteRole'>Delete</button>
+                    </div>
+                </div>
+                <div class="text-center text-primary pb-4 deleteRoleResponse"></div>
+            </div>
+        </div>
+    </div>
+    <!-- Permission Table -->
     <div class="card border-0 shadow-sm mb-4">
         <div class="card-header bg-white d-flex justify-content-between align-items-center">
             <h6 class="fw-bold mb-0">Permissions</h6>
@@ -189,7 +272,7 @@
         </div>
     </div>
 
-    <!-- Recent Posts Table -->
+    <!-- Role Table -->
     <div class="card border-0 shadow-sm">
         <div class="card-header bg-white d-flex justify-content-between align-items-center">
             <h6 class="fw-bold mb-0">Roles</h6>
@@ -206,20 +289,27 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @forelse($roles as $index => $role)
                     <tr>
-                        <td>1</td>
-                        <td>Admin</td>
+                        <td>{{$index + 1}}</td>
+                        <td>{{$role->name}}</td>
                         <td>
                             <ul>
-                                <li>Manage.Setting</li>
-                                <li>Manage.Users</li>
+                                @foreach($role->permissions as $permission)
+                                <li>{{$permission->name}}</li>
+                                @endforeach
                             </ul>
                         </td>
                         <td>
-                            <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-pencil"></i></button>
-                            <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                            <button class="btn btn-sm btn-outline-secondary showUpdateRoleForm" roleId='{{$role->id}}'><i class="bi bi-pencil"></i></button>
+                            <button class="btn btn-sm btn-outline-danger showDeleteRoleForm" roleId='{{$role->id}}'><i class="bi bi-trash"></i></button>
                         </td>
                     </tr>
+                    @empty
+                    <tr>
+                        <td colspan="4">Roles is not added yet..</td>
+                    </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
