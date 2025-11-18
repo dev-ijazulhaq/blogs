@@ -307,11 +307,16 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="4">Roles is not added yet..</td>
+                        <td colspan="4" class="text-center">
+                            <p> Roles is not added yet..</p>
+                        </td>
                     </tr>
                     @endforelse
                 </tbody>
             </table>
+            <div>
+                {{$roles->links()}}
+            </div>
         </div>
     </div>
 </div>

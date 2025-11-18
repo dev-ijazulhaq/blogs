@@ -277,3 +277,8 @@ footer p {
 .hero-section p {
     font-size: 1.1rem;
 }
+
+.validationError {
+    color: #dc3545;
+    font-size: 12px;
+}

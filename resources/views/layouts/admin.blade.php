@@ -18,10 +18,10 @@
         <x-admin.sidebar-tabs href="{{route('admin.index')}}" text='Dashboard' icon='bi-house-door' />
         <x-admin.sidebar-tabs href="{{route('admin.index')}}" text='Blogs' icon='bi-file-earmark-text' />
         <x-admin.sidebar-tabs href="{{route('admin.index')}}" text='Categories' icon='bi-folder' />
-        <x-admin.sidebar-tabs href="{{route('admin.index')}}" text='Users' icon='bi-people' />
+        <x-admin.sidebar-tabs href="{{route('admin.users')}}" text='Users' icon='bi-people' />
         <x-admin.sidebar-tabs href="{{route('admin.index')}}" text='Analytics' icon='bi-bar-chart' />
         <x-admin.sidebar-tabs href="{{route('admin.settings')}}" text='Settings' icon='bi-gear' />
-        <x-admin.sidebar-tabs href="{{route('auth.login')}}" text='Logout' icon='bi-box-arrow-right' />
+        <x-admin.sidebar-tabs href="{{route('auth.logout')}}" text='Logout' icon='bi-box-arrow-right' />
     </div>
 
     <!-- Top Navbar -->

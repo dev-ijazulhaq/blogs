@@ -9,7 +9,7 @@
             <p class="text-muted small">Login to your Blogify account</p>
         </div>
 
-        <form action="" method="POST">
+        <form action="{{route('auth.login')}}" method="POST">
             @csrf
 
             <!-- Email -->
@@ -52,7 +52,7 @@
 
         <div class="text-center mt-4">
             <p class="mb-0">Don't have an account?
-                <a href="{{route('auth.register')}}" class="text-decoration-none text-primary fw-semibold">Register</a>
+                <a href="{{route('register')}}" class="text-decoration-none text-primary fw-semibold">Register</a>
             </p>
         </div>
     </div>
