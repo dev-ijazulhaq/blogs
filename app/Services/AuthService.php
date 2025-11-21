@@ -28,6 +28,7 @@ class AuthService
     public function create(array $attributes): User
     {
         $user = $this->authRepositoryInterface->create($attributes);
+        $user->assignRole($attributes['role']);
         event(new Registered($user));
         return $user;
     }

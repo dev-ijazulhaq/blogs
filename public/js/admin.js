@@ -253,3 +253,42 @@ $(document).on('click','#deleteRole',function(){
         }
     });
 });
+
+
+
+$(document).on('click','#addCategory',function(){
+    const form = $('#storeCategoryForm');
+    const formData = form.serialize();
+    const url = form.attr('action');
+    $.ajax({
+        method: 'POST',
+        url: url,
+        data: formData,
+        success:function(response)
+        {
+            $(".categoryInsertResponse").text(response.message);
+            setTimeout(() => {
+                location.reload();
+            }, 2000);
+        },
+        error:function(xhr)
+        {
+            if(xhr.status == 422)
+            {
+                const errors = xhr.responseJSON;
+            }else{
+                console.log(xhr.responseJSON);
+                alert('Something went wrong, please try again letter');
+            }
+        }
+    });
+});
+
+
+$(document).on('click','.showEditModel',function(){
+    $("#editCategoryModel").modal('show');
+});
+
+$(document).on('click','.showDeleteModel',function(){
+    $("#categoryDeleteModal").modal('show');
+});

@@ -14,4 +14,10 @@ class PermissionRepository extends BaseRepository implements PermissionRepositor
     {
         parent::__construct($model);
     }
+
+    public function  getAllPermissions()
+    {
+        $permissions = Permission::all();
+        return $permissions;
+    }
 }

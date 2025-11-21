@@ -131,7 +131,7 @@
                             <label for="message-text" class="col-form-label">Assign Permissions:</label>
                             <label for="" class="validationError" id='assignPermissionResponse'></label>
                             <div class="row">
-                                @forelse($permissions as $index => $permission)
+                                @forelse($formPermissions as $index => $permission)
                                 <div class="col-6">
                                     <input type="checkbox" class="form-check-input" name="permissions[]" value="{{$permission->name}}">
                                     <label>{{$permission->name}}</label>
@@ -184,7 +184,7 @@
                             <label for="message-text" class="col-form-label">Assign Permissions:</label>
                             <label for="" class="validationError" id='updateAssignPermissionResponse'></label>
                             <div class="row">
-                                @forelse($permissions as $index => $permission)
+                                @forelse($formPermissions as $index => $permission)
                                 <div class="col-6">
                                     <input type="checkbox" class="form-check-input" name="permissions[]" value="{{$permission->name}}">
                                     <label>{{$permission->name}}</label>

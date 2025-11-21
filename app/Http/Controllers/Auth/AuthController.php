@@ -22,7 +22,6 @@ class AuthController extends Controller
     public function create()
     {
         $roles = $this->authService->getRoles();
-        dd($roles);
         return view('pages/auth/register', compact('roles'));
     }
     /**
@@ -48,7 +47,7 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended('dashboard');
+            return redirect()->intended('admin/dashboard');
         }
 
         return back()->withErrors([

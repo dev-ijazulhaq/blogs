@@ -24,6 +24,7 @@ class RegistrationRequest extends FormRequest
         return [
             'name' => ['bail', 'required', 'string', 'max:20'],
             'email' => ['bail', 'required', 'email', 'string', 'unique:users,email'],
+            'role' => ['bail', 'required'],
             'password' => ['required', 'string', 'confirmed']
         ];
     }

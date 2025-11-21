@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Repositories\Interfaces\PermissionRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 use Spatie\Permission\Models\Permission;
 
 class PermissionService
@@ -40,5 +41,10 @@ class PermissionService
     public function delete(string|int $id): bool
     {
         return $this->permission->delete($id);
+    }
+
+    public function getAllPermissions()
+    {
+        return $this->permission->getAllPermissions();
     }
 }

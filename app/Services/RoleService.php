@@ -41,4 +41,9 @@ class RoleService
     {
         return $this->role->delete($id);
     }
+
+    public function getAllRoles()
+    {
+        return $this->role->getAllRoles();
+    }
 }

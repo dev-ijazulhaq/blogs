@@ -24,7 +24,8 @@ class SettingsController extends Controller
     {
         $permissions = $this->permissionService->all();
         $roles = $this->roleService->all();
+        $formPermissions = $this->permissionService->getAllPermissions();
 
-        return View('pages.admin.settings', compact('permissions', 'roles'));
+        return View('pages.admin.settings', compact('permissions', 'roles', 'formPermissions'));
     }
 }

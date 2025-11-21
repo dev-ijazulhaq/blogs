@@ -39,4 +39,10 @@ class RoleRepository extends BaseRepository implements RoleRepositoryInterface
         $role->syncPermissions($attributes['permissions']);
         return $role;
     }
+
+    public function getAllRoles()
+    {
+        $roles = Role::all();
+        return $roles;
+    }
 }

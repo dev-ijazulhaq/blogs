@@ -16,11 +16,21 @@
     <div class="sidebar bg-white shadow-sm" id="sidebar">
         <h5 class="text-center text-primary fw-bold mb-4">Blogify Admin</h5>
         <x-admin.sidebar-tabs href="{{route('admin.index')}}" text='Dashboard' icon='bi-house-door' />
+        @can('manage.blogs')
         <x-admin.sidebar-tabs href="{{route('admin.index')}}" text='Blogs' icon='bi-file-earmark-text' />
-        <x-admin.sidebar-tabs href="{{route('admin.index')}}" text='Categories' icon='bi-folder' />
+        @endcan
+        @can('manage.categories')
+        <x-admin.sidebar-tabs href="{{route('admin.categories.index')}}" text='Categories' icon='bi-folder' />
+        @endcan
+        @can('manage.users')
         <x-admin.sidebar-tabs href="{{route('admin.users')}}" text='Users' icon='bi-people' />
+        @endcan
+        @can('manage.analytics')
         <x-admin.sidebar-tabs href="{{route('admin.index')}}" text='Analytics' icon='bi-bar-chart' />
+        @endcan
+        @can('manage.settings')
         <x-admin.sidebar-tabs href="{{route('admin.settings')}}" text='Settings' icon='bi-gear' />
+        @endcan
         <x-admin.sidebar-tabs href="{{route('auth.logout')}}" text='Logout' icon='bi-box-arrow-right' />
     </div>
 
@@ -41,7 +51,7 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" data-bs-toggle="dropdown">
                         <img src="https://i.pravatar.cc/40" class="rounded-circle me-2" alt="User">
-                        <span>Ijaz</span>
+                        <span>{{auth()->user()->name}}</span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li><a class="dropdown-item" href="#">Profile</a></li>

@@ -2,6 +2,7 @@
 
 @section('mainContent')
 
+
 <!-- Register Section -->
 <div class="container">
     <div class="card register-card">
@@ -33,6 +34,21 @@
                         <span class="input-group-text"><i class="bi bi-envelope"></i></span>
                         <input type="email" name="email" id="email" class="form-control"
                             placeholder="you@example.com">
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="role" class="form-label">Type</label>
+                    <label for="" class="validationError" id='response_role'></label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-person"></i></span>
+                        <select name="role" id="role" class="form-control">
+                            <option value="" disabled selected>Select type</option>
+                            @foreach($roles as $role)
+                            @continue(in_array($role->name, ['Super Admin', 'Admin']))
+                            <option value="{{$role->name}}">{{ucwords($role->name)}}</option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
 
