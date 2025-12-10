@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CategoryRequest extends FormRequest
+class UpdateCategoryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,20 +22,23 @@ class CategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'id' => ['required', 'string'],
             'name' => ['required', 'string', 'max:24'],
-            'image' => ['bail', 'required', 'image', 'mimes:jpg,png,jpeg,gif']
+            'image' => ['image', 'mimes:jpg,jpeg,png,gif'],
+            'oldImage' => ['required'],
         ];
     }
 
     public function messages()
     {
         return [
-            'name.required' => 'Name must be required',
-            'name.string' => 'Name must be a valid string',
-            'name.max' => 'Length of character no longer then 24',
-            'image.required' => 'Image must be required',
-            'image.image' => 'The type of file must be image',
-            'image.mimes' => 'Required to select the valid image'
+            'id.required' => 'Id must be required',
+            'id:string' => 'Id must be a string or integer',
+            'name,required' => 'Name must be required',
+            'name.string' => 'Name must be a valid type string.',
+            'name.max' => 'Name may not longer then 24 characters.',
+            'image.image' =>  'File type must be image',
+            'image.mime' => 'The type of image is not valid.'
         ];
     }
 }

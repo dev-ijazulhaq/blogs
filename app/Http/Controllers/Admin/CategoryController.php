@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryRequest;
+use App\Http\Requests\UpdateCategoryRequest;
 use App\Services\CategoryService;
 use App\Traits\ControllerResponse;
 use Illuminate\Http\Request;
@@ -22,7 +23,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return view('pages.admin.categories');
+        $categories = $this->categoryService->all();
+        return view('pages.admin.categories', compact('categories'));
     }
 
     /**
@@ -39,8 +41,8 @@ class CategoryController extends Controller
     public function store(CategoryRequest $request)
     {
         try {
-            $this->categoryService->create($request->validated());
-            return $this->successResponse('Category successfully created', null, 201);
+            $service = $this->categoryService->create($request->validated());
+            return $this->successResponse('Category successfully created', $service, 201);
         } catch (\Throwable $th) {
             return $this->errorResponse('Category creating failed', $th->getMessage(), 500);
         }
@@ -51,7 +53,12 @@ class CategoryController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try {
+            $category = $this->categoryService->getCategory($id);
+            return $this->successResponse('Successfully found.', $category, 201);
+        } catch (\Throwable $th) {
+            return $this->errorResponse(false, $th->getMessage(), 401);
+        }
     }
 
     /**
@@ -65,9 +72,14 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateCategoryRequest $request, string $id)
     {
-        //
+        try {
+            $categoryService = $this->categoryService->updateCategory($request->validated(), $id);
+            return $this->successResponse('Category is successfully updated', $categoryService, 200);
+        } catch (\Throwable $th) {
+            return $this->errorResponse('Category updating failed', $th->getMessage(), 500);
+        }
     }
 
     /**
@@ -75,6 +87,6 @@ class CategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        return $this->categoryService->deleteCategory($id);
     }
 }

@@ -256,14 +256,52 @@ $(document).on('click','#deleteRole',function(){
 
 
 
+// $(document).on('click','#addCategory',function(){
+//     const form = $('#storeCategoryForm');
+//     const formData = form.serialize();
+//     const url = form.attr('action');
+//     $.ajax({
+//         method: 'POST',
+//         url: url,
+//         data: formData,
+//         success:function(response)
+//         {
+//             $(".categoryInsertResponse").text(response.message);
+//             setTimeout(() => {
+//                 location.reload();
+//             }, 2000);
+//         },
+//         error:function(xhr)
+//         {
+//             if(xhr.status == 422)
+//             {
+//                 const errors = xhr.responseJSON;
+//             }else{
+//                 console.log(xhr.responseJSON);
+//                 alert('Something went wrong, please try again letter');
+//             }
+//         }
+//     });
+// });
+
+
+//====//====//====//====//====//====//====//====//====//====//====//====//
+//====//====//====//====//====//====//====//====//====//====//====//====//
+// Categories //
+//====//====//====//====//====//====//====//====//====//====//====//====//
+//====//====//====//====//====//====//====//====//====//====//====//====//
+
 $(document).on('click','#addCategory',function(){
-    const form = $('#storeCategoryForm');
-    const formData = form.serialize();
+    $(".validationError").text('');
+    const form = $("#storeCategoryForm");
     const url = form.attr('action');
+    const formData = new FormData(form[0]);
     $.ajax({
         method: 'POST',
         url: url,
         data: formData,
+        contentType: false,
+        processData: false,
         success:function(response)
         {
             $(".categoryInsertResponse").text(response.message);
@@ -275,20 +313,174 @@ $(document).on('click','#addCategory',function(){
         {
             if(xhr.status == 422)
             {
-                const errors = xhr.responseJSON;
+                let errors = xhr.responseJSON.errors;
+                $("#responseName").text(errors.name);
+                $("#responseImage").text(errors.image);
             }else{
                 console.log(xhr.responseJSON);
-                alert('Something went wrong, please try again letter');
+                alert('Something went wrong, please try again latter');
+            }
+        }
+    });
+
+});
+
+$(document).on('click','.showEditCategoryModel',function(){
+    $("#editCategoryModel").modal('show');
+    const categoryId = $(this).attr('categoryId');
+    const url = `categories/${categoryId}`;
+    $.ajax({
+        method: 'GET',
+        url: url,
+        dataType: 'json',
+        success:function(response)
+        {
+            const data = response.data;
+            $("#editCategoryId").val(data.id);
+            $("#editCategoryname").val(data.name);
+            $("#editCategoryOldImage").val(data.image);
+            $("#categoryEditImagePreview").attr('src','http://127.0.0.1:8000/storage/categories/'+data.image);
+        },
+        error:function(xhr)
+        {
+            console.log(xhr.responseJSON);
+            alert("Something went wrong please try again litter.");
+        }
+    });
+
+});
+
+// $(document).on('click','#editCategory',function(){
+//     const form = $("#editCategoryForm");
+//     const categoryId = form.find("input[name='id']").val();
+//     const formData = new FormData(form[0]);
+//     const url = `categories/${categoryId}`;
+
+//     formData.append('_method','PATCH');
+
+
+//     $.ajaxSetup({
+//         headers: {
+//             'X-CSRF-TOKEN': $('meta[name="csrf_token]"').attr('content')
+//         },
+//     });
+
+//     $.ajax({
+//         method: 'POST',
+//         url: url,
+//         data: formData,
+//         contentType: false,
+//         processData: false,
+//         success:function(response)
+//         {
+//             console.log(response);
+//         },
+//         error:function(xhr)
+//         {
+//             console.log(xhr);
+//         }
+//     });
+// });
+
+// $(document).on('click','#editCategory',function(){
+//     const form = $("#editCategoryForm");
+//     const categoryId = form.find('input[name="id"]').val();
+//     const url = `categories/${categoryId}`;
+//     const formData = new FormData(form[0]);
+//     formData.append('_method','PATCH');
+//     $.ajaxSetup({
+//         header: {
+//             'X-CSRF-TOKEN': $('meta[name="csrf_token"]').attr('content')
+//         },
+//     });
+//     $.ajax({
+//         method: 'POST',
+//         url: url,
+//         data: formData,
+//         contentType: false,
+//         processData: false,
+//         success:function(response){
+//             console.log(response);
+//         },
+//         error:function(xhr){
+//             console.log(xhr.responseJSON);
+//         }
+//     });
+// });
+
+$(document).on('click','#editCategory',function(){
+    $(".validationError").text('');
+    const form = $("#editCategoryForm");
+    const categoryId = form.find('input[name="id"]').val();
+    const url = `categories/${categoryId}`;
+    const formData = new FormData(form[0]);
+    formData.append('_method','PATCH');
+    $.ajaxSetup({
+        header: {
+            'X-CSRF-TOKEN': $('meta[name="csrf_token"]').attr('content')
+        },
+    });
+    $.ajax({
+        method: 'POST',
+        url: url,
+        data: formData,
+        dataType: 'json',
+        processData: false,
+        contentType: false,
+        success:function(response)
+        {
+            $(".categoryEditResponse").text(response.message);
+            setTimeout(() => {
+                location.reload();
+            }, 2000);
+        },
+        error:function(xhr)
+        {
+            if(xhr.status == 422){
+                let errors = xhr.responseJSON.errors;
+                $("#editResponseName").text(errors.name);
+            }else{
+                alert("Something went wrong, Please try again litter");
+                console.log(xhr.responseJSON)
             }
         }
     });
 });
 
 
-$(document).on('click','.showEditModel',function(){
-    $("#editCategoryModel").modal('show');
+
+$(document).on('click','.showDeleteCategoryModel',function(){
+    $("#categoryDeleteModal").modal('show');
+    const categoryId = $(this).attr('categoryId');
+    const form = $("#deleteCategoryForm");
+    form.find('input[name="id"]').val(categoryId);
 });
 
-$(document).on('click','.showDeleteModel',function(){
-    $("#categoryDeleteModal").modal('show');
+$(document).on('click','#deleteCategory',function(){
+    const form = $("#deleteCategoryForm");
+    const categoryId = form.find('input[name="id"]').val();
+    const url = `categories/${categoryId}`;
+    const formData = form.serialize();
+    $.ajaxSetup({
+        header : {
+            'X-CSRF-TOKEN': $('meta[name="csrf_token"]').attr('content')
+        },
+    });
+    $.ajax({
+        method: 'DELETE',
+        url: url,
+        dataType: 'json',
+        data: formData,
+        success:function(response)
+        {
+            $(".deleteCategoryResponse").text(response.message);
+            setTimeout(() => {
+                location.reload();
+            },2000);
+        },
+        error:function(xhr){
+            console.log(xhr.responseJSON);
+        }
+        
+    });
 });

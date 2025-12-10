@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Repositories\Interfaces\PermissionRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Collection;
 use Spatie\Permission\Models\Permission;
 
 class PermissionService
