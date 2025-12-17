@@ -2,10 +2,12 @@
 
 namespace App\Services;
 
+use App\Events\BlogPublishEvent;
 use App\Repositories\Interfaces\BlogRepositoryInterface;
 use App\Traits\HandleImage;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class BlogService
 {
@@ -21,7 +23,8 @@ class BlogService
 
     public function all()
     {
-        return $this->blogInterface->blogsAndCategoriesByUser(Auth::id());
+        $user = Auth::user();
+        return $this->blogInterface->blogsAndCategoriesByUser($user);
     }
 
     public function create(array $attributes)
@@ -70,5 +73,12 @@ class BlogService
         }
 
         return $this->blogInterface->delete($id);
+    }
+
+    public function actionOnBlog(string|int $newStatus, string|int $id)
+    {
+        $blog = $this->blogInterface->actionOnBlog($newStatus, $id);
+        event(new BlogPublishEvent($blog, $blog->user));
+        return $blog;
     }
 }

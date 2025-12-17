@@ -568,8 +568,35 @@ $(document).on('click','#deleteBlog',function(){
     });
 });
 
+$(document).on('click','.viewActionBlog',function(){
+    const blogId = $(this).attr('blogId');
+    $("#publishBlogId").val(blogId);
+    $("#actionBlogModal").modal('show');
+});
 
-
+$(document).on('click','#publishBlog',function(){
+    const form = $("#publishBlogForm");
+    const blog = form.find('input[name="id"]').val();
+    const formData = form.serialize();
+    $.ajax({
+        method: 'PATCH',
+        url: `blogs/${blog}/publish`,
+        data: formData,
+        dataType: 'json',
+        success:function(response)
+        {
+            $(".actionBlogResponse").text(response.message);
+            setTimeout(() => {
+                location.reload();
+            }, 2000);
+        },
+        error:function(xhr)
+        {
+            console.log(xhr.responseJSON);
+            alert("Something went wrong, please try again latter");
+        }
+    });
+});
 //====//====//====//====//====//====//====//====//====//====//====//====//
 //====//====//====//====//====//====//====//====//====//====//====//====//
 // USERS ACCOUNTS //

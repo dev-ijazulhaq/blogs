@@ -63,5 +63,6 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified'])->group(
     Route::resource('usersAccounts', UserController::class)->middleware('HasAccess:manage.users');
     Route::patch('usersAccounts/{usersAccount}/{status}', [UserController::class, 'enableDisable'])->middleware('HasAccess:manage.users')->name('usersAccounts.enableDisable');
     Route::resource('blogs', BlogController::class)->middleware('HasAccess:manage.blogs');
+    Route::patch('blogs/{blog}/publish', [BlogController::class, 'actionOnBlog'])->middleware('HasAccess:manage.blogs')->name('blogs.action');
     Route::resource('comments', CommentController::class)->middleware('HasAccess:manage.comments');
 });

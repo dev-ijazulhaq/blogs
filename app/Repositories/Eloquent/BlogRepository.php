@@ -17,13 +17,23 @@ class BlogRepository extends BaseRepository implements BlogRepositoryInterface
         parent::__construct($model);
     }
 
-    public function blogsAndCategoriesByUser(int $userId): array
+    public function blogsAndCategoriesByUser($user): array
     {
-        $blogs = $this->model->where('user_id', $userId)->with(['user', 'category:id,name'])->latest()->get();
+        $query = $this->model->with(['user', 'category:id,name'])->latest();
+        if (! $user->roles->name = 'Super Admin') {
+            $query->where('user_id', $user->id);
+        }
         $categories = Category::all();
         return [
-            'blogs' => $blogs,
+            'blogs' => $query->get(),
             'categories' => $categories
         ];
+    }
+
+    public function actionOnBlog(string|int $status, string|int $id)
+    {
+        $blog = $this->model->findOrFail($id);
+        $blog->update(['is_publish' => $status]);
+        return $blog;
     }
 }

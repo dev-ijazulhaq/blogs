@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateBlog;
 use App\Models\Blog;
 use App\Services\BlogService;
 use App\Traits\ControllerResponse;
+use BcMath\Number;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
@@ -99,6 +100,17 @@ class BlogController extends Controller
             return $this->successResponse('Blog is successfully deleted', $delete, 200);
         } catch (\Throwable $th) {
             return $this->errorResponse('Blog deleting failed..!', $th->getMessage(), 500);
+        }
+    }
+
+    public function actionOnBlog(Blog $blog)
+    {
+        try {
+            $newStatus =  $blog->is_publish->label() == 'Pending' ? 1 : 0;
+            $blog = $this->blogService->actionOnBlog($newStatus, $blog->id);
+            return $this->successResponse('Blog status successfully updated', $blog, 200);
+        } catch (\Throwable $th) {
+            return $this->errorResponse('Action on blog status failed..!', $th->getMessage(), 500);
         }
     }
 }

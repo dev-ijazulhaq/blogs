@@ -124,6 +124,30 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="actionBlogModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="">Status of the blog</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id='publishBlogForm'>
+                    @csrf
+                    <input type="hidden" id='publishBlogId' name="id">
+                </form>
+                <div class="modal-body">
+                    <p class="text-center">Are you sure want to publish this Blog?</p>
+                </div>
+                <div class="modal-footer">
+                    <div class="footerBtn">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id='publishBlog'>Publish</button>
+                    </div>
+                </div>
+                <div class="text-center text-primary pb-4 actionBlogResponse"></div>
+            </div>
+        </div>
+    </div>
 
     <!-- Recent Posts Table -->
     <div class="card border-0 shadow-sm">
@@ -160,6 +184,9 @@
                         <td>
                             <button class="btn btn-sm btn-outline-secondary viewUpdateBlog" blogId="{{$blog->id}}"><i class="bi bi-pencil"></i></button>
                             <button class="btn btn-sm btn-outline-danger viewDeleteBlog" blogId="{{$blog->id}}"><i class="bi bi-trash"></i></button>
+                            @can('Super Admin')
+                            <button class="btn btn-sm btn-outline-primary viewActionBlog" blogId="{{$blog->id}}" blogStatus="{{$blog->is_publish}}"><i class="bi bi-arrow-left-right"></i></button>
+                            @endcan
                         </td>
                     </tr>
                     @empty

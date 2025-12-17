@@ -2,13 +2,13 @@
 
 namespace App\Listeners;
 
-use App\Events\AccountStatusEvent;
-use App\Mail\AccountStatusMail;
+use App\Events\BlogPublishEvent;
+use App\Mail\BlogPublishMail;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Mail;
 
-class AccountStatusListener
+class BlogPublishListener
 {
     /**
      * Create the event listener.
@@ -21,10 +21,8 @@ class AccountStatusListener
     /**
      * Handle the event.
      */
-
-    public function handle(AccountStatusEvent $event): void
+    public function handle(BlogPublishEvent $event): void
     {
-        Mail::to($event->user->email)
-            ->send(new AccountStatusMail($event->user));
+        Mail::to($event->user->email)->send(new BlogPublishMail($event->blog->title));
     }
 }
