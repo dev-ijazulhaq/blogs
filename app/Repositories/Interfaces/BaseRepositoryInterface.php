@@ -13,5 +13,5 @@ interface BaseRepositoryInterface
     public function create(array $attributes): Model;
     public function update(array $attributes, string|int $id): Model;
     public function delete(string|int $id): bool;
-    public function enableOrDisable(string|int $status, string|int $id): Model;
+    public function enableOrDisable(int $status, int $id): Model;
 }

@@ -3,6 +3,18 @@ const sidebar = document.getElementById('sidebar');
 sidebarToggle?.addEventListener('click', () => {
     sidebar.classList.toggle('active');
 });
+$(document).on('click','#closeUnauthorized',function(){
+    location.reload();
+});
+
+function unauthorizedResponse()
+{
+    $(".modal").modal('hide');
+    $("#unauthorizedModal").modal('show');
+    setTimeout(() => {
+        location.reload();
+    }, 3000);
+}
 
 
 $("#addPermission").on("click",function(e){
@@ -50,7 +62,7 @@ $(document).on('click','.getPermission',function(e){
             $("#permissionUpdateModal").modal('show');
         },
         error:function(xhr){
-            alert("Something went wrong, please try again litter");
+            alert("Something went wrong, please try again latter");
             console.log(xhr.responseText);
         }
     });
@@ -85,7 +97,7 @@ $(document).on('click','#updatePermission',function(e){
                 $("#responseUpdateGuard").text(errors.guard_name);
             }else{
                 console.log(xhr.responseText);
-                alert('Something went wrong, please try again litter');
+                alert('Something went wrong, please try again latter');
             }
         }
     });
@@ -118,7 +130,7 @@ $(document).on('click','#deletePermission',function(e){
         },
         error:function(xhr){
             console.log(xhr.responseJSON);
-            alert('Something went wrong, please try again litter');
+            alert('Something went wrong, please try again latter');
         }
     });
 });
@@ -256,35 +268,6 @@ $(document).on('click','#deleteRole',function(){
 
 
 
-// $(document).on('click','#addCategory',function(){
-//     const form = $('#storeCategoryForm');
-//     const formData = form.serialize();
-//     const url = form.attr('action');
-//     $.ajax({
-//         method: 'POST',
-//         url: url,
-//         data: formData,
-//         success:function(response)
-//         {
-//             $(".categoryInsertResponse").text(response.message);
-//             setTimeout(() => {
-//                 location.reload();
-//             }, 2000);
-//         },
-//         error:function(xhr)
-//         {
-//             if(xhr.status == 422)
-//             {
-//                 const errors = xhr.responseJSON;
-//             }else{
-//                 console.log(xhr.responseJSON);
-//                 alert('Something went wrong, please try again letter');
-//             }
-//         }
-//     });
-// });
-
-
 //====//====//====//====//====//====//====//====//====//====//====//====//
 //====//====//====//====//====//====//====//====//====//====//====//====//
 // Categories //
@@ -344,69 +327,11 @@ $(document).on('click','.showEditCategoryModel',function(){
         error:function(xhr)
         {
             console.log(xhr.responseJSON);
-            alert("Something went wrong please try again litter.");
+            alert("Something went wrong please try again latter.");
         }
     });
 
 });
-
-// $(document).on('click','#editCategory',function(){
-//     const form = $("#editCategoryForm");
-//     const categoryId = form.find("input[name='id']").val();
-//     const formData = new FormData(form[0]);
-//     const url = `categories/${categoryId}`;
-
-//     formData.append('_method','PATCH');
-
-
-//     $.ajaxSetup({
-//         headers: {
-//             'X-CSRF-TOKEN': $('meta[name="csrf_token]"').attr('content')
-//         },
-//     });
-
-//     $.ajax({
-//         method: 'POST',
-//         url: url,
-//         data: formData,
-//         contentType: false,
-//         processData: false,
-//         success:function(response)
-//         {
-//             console.log(response);
-//         },
-//         error:function(xhr)
-//         {
-//             console.log(xhr);
-//         }
-//     });
-// });
-
-// $(document).on('click','#editCategory',function(){
-//     const form = $("#editCategoryForm");
-//     const categoryId = form.find('input[name="id"]').val();
-//     const url = `categories/${categoryId}`;
-//     const formData = new FormData(form[0]);
-//     formData.append('_method','PATCH');
-//     $.ajaxSetup({
-//         header: {
-//             'X-CSRF-TOKEN': $('meta[name="csrf_token"]').attr('content')
-//         },
-//     });
-//     $.ajax({
-//         method: 'POST',
-//         url: url,
-//         data: formData,
-//         contentType: false,
-//         processData: false,
-//         success:function(response){
-//             console.log(response);
-//         },
-//         error:function(xhr){
-//             console.log(xhr.responseJSON);
-//         }
-//     });
-// });
 
 $(document).on('click','#editCategory',function(){
     $(".validationError").text('');
@@ -440,14 +365,12 @@ $(document).on('click','#editCategory',function(){
                 let errors = xhr.responseJSON.errors;
                 $("#editResponseName").text(errors.name);
             }else{
-                alert("Something went wrong, Please try again litter");
+                alert("Something went wrong, Please try again latter");
                 console.log(xhr.responseJSON)
             }
         }
     });
 });
-
-
 
 $(document).on('click','.showDeleteCategoryModel',function(){
     $("#categoryDeleteModal").modal('show');
@@ -482,5 +405,312 @@ $(document).on('click','#deleteCategory',function(){
             console.log(xhr.responseJSON);
         }
         
+    });
+});
+
+
+
+//====//====//====//====//====//====//====//====//====//====//====//====//
+//====//====//====//====//====//====//====//====//====//====//====//====//
+// Blogs //
+//====//====//====//====//====//====//====//====//====//====//====//====//
+//====//====//====//====//====//====//====//====//====//====//====//====//
+
+
+$(document).on('click','#addBlog',function(){
+    $(".validationError").text('');
+    const form = $("#blogForm");
+    const url = form.attr('action');
+    const formData = new FormData(form[0]);
+    $.ajax({
+        method: 'POST',
+        url : url,
+        data : formData,
+        dataType: 'JSON',
+        contentType: false,
+        processData: false,
+        success:function(response)
+        {
+            $(".blogInsertResponse").text(response.message);
+            setTimeout(() => {
+                location.reload();
+            }, 2000);
+        },
+        error:function(xhr)
+        {
+            if(xhr.status == 422){
+                let error = xhr.responseJSON.errors;
+                $("#responseTitle").text(error.title);
+                $("#responseDescription").text(error.description);
+                $("#responseCategory").text(error.category_id);
+                $("#responseImage").text(error.image);
+            }else if(xhr.status == 403){
+                unauthorizedResponse();
+            }else{
+                console.log(xhr.responseJSON);
+            }
+        },
+    });
+});
+
+$(document).on('click','.viewUpdateBlog',function(){
+    const blogId = $(this).attr('blogId');
+    const url = `blogs/${blogId}/edit`;
+    $.ajax({
+        method: 'GET',
+        url : url,
+        dataType: 'JSON',
+        success:function(response)
+        {
+            const form = $("#blogUpdateForm");
+            const blog = response.data;
+            form.find("input[name='id']").val(blog.id);
+            form.find("input[name='title']").val(blog.title);
+            form.find("textarea[name='description']").val(blog.description);
+            form.find("select[name='category_id']").val(blog.category_id);
+            form.find("input[name='title']").val(blog.title);
+            form.find("input[name='oldImg']").val(blog.image);
+            $("#updateBlogImagePreview").attr('src','http://127.0.0.1:8000/storage/blogs/'+blog.image);
+            $("#editPostModal").modal('show');
+        },
+        error:function(xhr)
+        {
+            if(xhr.status == 403)
+            {
+               unauthorizedResponse();
+            }else{
+                alert('Something went wrong, please try again latter..!');
+                location.reload();
+            }
+        }
+    });
+});
+
+$(document).on('click','#updateBlog',function(){
+    $(".validationError").text("");
+    const form = $("#blogUpdateForm");
+    const blogId = form.find("input[name='id']").val();
+    const url = `blogs/${blogId}`;
+    const formData = new FormData(form[0]);
+    formData.append('_method','PATCH');
+    $.ajaxSetup({
+        header: {
+            'X-CSRF-TOKEN': $('meta[name="csrf_token"]').attr('content')
+        },
+    });
+    $.ajax({
+        method: 'POST',
+        url: url,
+        data: formData,
+        dataType: 'JSON',
+        processData: false,
+        contentType: false,
+        success:function(response)
+        {
+            $(".blogInsertResponse").text(response.message);
+            setTimeout(() => {
+                location.reload();
+            }, 2000);
+        },
+        error:function(xhr)
+        {
+            if(xhr.status == 422)
+            {
+                const errors = xhr.responseJSON.errors;
+                $("#responseUpdateTitle").text(errors.title);
+                $("#responseUpdateDescription").text(errors.description);
+                $("#responseUpdateCategory").text(errors.category_id);
+            }else if(xhr.status == 403)
+            {
+                unauthorizedResponse();
+            }else{
+                alert("Something went wrong..!");
+                console.log(xhr.responseJSON);
+            }
+        }
+    });
+});
+
+$(document).on('click','.viewDeleteBlog',function(){
+    const blogId = $(this).attr('blogId');
+    $("#deleteBlogId").val(blogId);
+    $("#deleteBlogModal").modal('show');
+});
+
+$(document).on('click','#deleteBlog',function(){
+    const formData = $("#deleteBlogForm").serialize();
+    const blogId = $("#deleteBlogId").val();
+    const url = `blogs/${blogId}`;
+    $.ajax({
+        method: 'DELETE',
+        url: url,
+        data: formData,
+        dataType: 'json',
+        success:function(response)
+        {
+            console.log(response);
+            $(".deleteBlogResponse").text(response.message);
+            setTimeout(() => {
+                location.reload();
+            }, 2000);
+        },
+        error:function(xhr)
+        {
+            if(xhr.status == 403)
+            {
+                unauthorizedResponse();
+            }else{
+                alert('Something went wrong..!');
+                console.log(xhr.responseJSON);
+            }
+        }
+        
+    });
+});
+
+
+
+//====//====//====//====//====//====//====//====//====//====//====//====//
+//====//====//====//====//====//====//====//====//====//====//====//====//
+// USERS ACCOUNTS //
+//====//====//====//====//====//====//====//====//====//====//====//====//
+//====//====//====//====//====//====//====//====//====//====//====//====//
+
+
+
+
+$(document).on('click','#addUser',function(){
+    $(".validationError").text('');
+    const form = $("#storeUserForm");
+    const formData = form.serialize();
+    $.ajax({
+        method: 'POST',
+        url : 'usersAccounts',
+        data: formData,
+        dataType: 'JSON',
+        success:function(response)
+        {
+            $(".userInsertResponse").text(response.message);
+            setTimeout(() => {
+                location.reload();
+            }, 2000);
+        },
+        error:function(xhr)
+        {
+            if(xhr.status == 422)
+            {
+                let errors = xhr.responseJSON.errors;
+                $("#responseName").text(errors.name);
+                $("#responseEmail").text(errors.email);
+                $("#responseRole").text(errors.role);
+                $("#responsePassword").text(errors.password);
+            }else{
+                console.log(xhr.responseJSON);
+                alert("Somethings went wrong, please try again latter");
+            }
+        }
+    });
+});
+
+$(document).on('click','.editUserAccount',function(){
+    const userId = $(this).attr('userId');
+    const url = `usersAccounts/${userId}/edit`;
+    $.ajax({
+        method: 'GET',
+        url: url,
+        dataType: 'json',
+        success:function(response)
+        {
+            const userData = response.data;
+            const form = $("#editUserForm");
+            form.find("input[name='id']").val(userData.id);
+            form.find("input[name='name']").val(userData.name);
+            form.find("input[name='email']").val(userData.email);
+            form.find("select[name='role']").val(userData.role);
+            $("#userEditModel").modal('show');
+        },
+        error:function(xhr)
+        {
+            alert('Something went wrong, please try again latter..')
+            console.log(xhr.responseJSON);
+        }
+    });
+});
+
+$(document).on('click','#updateUser',function(){
+    const form = $("#editUserForm");
+    const userId = form.find("input[name='id']").val();
+    const formData = form.serialize();
+    const url = `usersAccounts/${userId}`;
+    $.ajax({
+        method: 'PATCH',
+        url: url,
+        data: formData,
+        success:function(response)
+        {
+            $(".userUpdateResponse").text(response.message);
+            setTimeout(() => {
+                location.reload();
+            }, 2000);
+        },
+        error:function(xhr)
+        {
+            if(xhr.status == 422)
+            {
+                const error = xhr.responseJSON.errors;
+                $("#responseUpdateName").text(error.name);
+                $("#responseUpdateEmail").text(error.email);
+                $("#responseUpdateRole").text(error.role);
+                $("#responseUpdatePassword").text(error.password);
+            }else{
+                console.log(xhr.responseJSON);
+                alert("User updating failed..!");
+            }
+        }
+    });
+});
+
+
+$(document).on('click','.actionUserAccount',function(){
+    const userId = $(this).attr("userId");
+    const userStatus = $(this).attr("userStatus");
+    $("#userActionId").val(userId);
+    let newStatus = 1;
+    if(userStatus == 1){
+        newStatus = 0;
+    }
+    $("#userActionStatus").val(newStatus);
+    if(userStatus == 0)
+    {
+        $("#actionOnAccount").text('Enable');
+    }else{
+        $("#actionOnAccount").text('Disable');
+    }
+    $("#userActionModal").modal('show');
+});
+
+$(document).on('click','#actionOnAccount',function(){
+    const form = $("#userActionForm");
+    const userId = form.find("input[name='id']").val();
+    const userStatus = Number(form.find("input[name='status']").val());
+    const formData = form.serialize();
+    const url = `usersAccounts/${userId}/${userStatus}`;
+    $.ajax({
+        method: 'PATCH',
+        url: url,
+        data: formData,
+        dataType: 'json',
+        success:function(response)
+        {
+            $(".actionAccountResponse").text(response.message);
+            setTimeout(() => {
+                location.reload();
+            }, 2000);
+        },
+        error:function(xhr)
+        {
+            console.log(xhr.responseJSON);
+            alert("Something went wrong, please try again latter..")
+        }
     });
 });

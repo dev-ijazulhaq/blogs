@@ -109,6 +109,7 @@
                     <th>S.No</th>
                     <th>Name</th>
                     <th>Image</th>
+                    <th>Status</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -118,8 +119,12 @@
                     <td>{{$index + 1}}</td>
                     <td>{{$category->name}}</td>
                     <td class="tableImage">
-                        <img class="img-fluid w-10" src="{{asset('http://127.0.0.1:8000/storage/categories/'.$category->image)}}" alt="">
+                        <img class="img-fluid tableImg" src="{{asset('http://127.0.0.1:8000/storage/categories/'.$category->image)}}" alt="">
                     </td>
+                    <td>
+                        <span class="badge {{$category->status->color()}} text-white">
+                            {{$category->status->label()}}
+                        </span>
                     <td>
                         <button class="btn btn-sm btn-outline-secondary showEditCategoryModel" categoryId='{{$category->id}}'><i class="bi bi-pencil"></i></button>
                         <button class="btn btn-sm btn-outline-danger showDeleteCategoryModel" categoryId='{{$category->id}}'><i class="bi bi-trash"></i></button>

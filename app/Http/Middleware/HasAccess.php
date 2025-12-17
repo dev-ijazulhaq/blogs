@@ -14,7 +14,7 @@ class HasAccess
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next, string $permission): Response
     {
         $user = Auth::user();
 
@@ -23,8 +23,6 @@ class HasAccess
         }
 
         if ($user->hasAnyRole(['Admin', 'Author', 'Visitor'])) {
-            $permission = $request->route()->getName();
-
             if ($user->can($permission)) {
                 return $next($request);
             }

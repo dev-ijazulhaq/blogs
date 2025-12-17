@@ -50,7 +50,7 @@ class BaseRepository implements BaseRepositoryInterface
         return $record->delete();
     }
 
-    public function enableOrDisable(string|int $status, string|int $id): Model
+    public function enableOrDisable(int $status, int $id): Model
     {
         $record = $this->model->findOrFail($id);
         $record->update(['status' => $status]);

@@ -12,21 +12,39 @@
 
 <body>
 
+    <div class="modal fade" id="unauthorizedModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="">Unauthorized</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-center">You account are unauthorized for this activity..!</p>
+                </div>
+                <div class="modal-footer">
+                    <div class="footerBtn">
+                        <button type="button" class="btn btn-secondary" id='closeUnauthorized' data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Sidebar -->
     <div class="sidebar bg-white shadow-sm" id="sidebar">
         <h5 class="text-center text-primary fw-bold mb-4">Blogify Admin</h5>
         <x-admin.sidebar-tabs href="{{route('admin.index')}}" text='Dashboard' icon='bi-house-door' />
         @can('manage.blogs')
-        <x-admin.sidebar-tabs href="{{route('admin.index')}}" text='Blogs' icon='bi-file-earmark-text' />
+        <x-admin.sidebar-tabs href="{{route('admin.blogs.index')}}" text='Blogs' icon='bi-file-earmark-text' />
+        @endcan
+        @can('manage.comments')
+        <x-admin.sidebar-tabs href="{{route('admin.comments.index')}}" text='Comments' icon='bi-file-earmark-text' />
         @endcan
         @can('manage.categories')
         <x-admin.sidebar-tabs href="{{route('admin.categories.index')}}" text='Categories' icon='bi-folder' />
         @endcan
         @can('manage.users')
-        <x-admin.sidebar-tabs href="{{route('admin.users')}}" text='Users' icon='bi-people' />
-        @endcan
-        @can('manage.analytics')
-        <x-admin.sidebar-tabs href="{{route('admin.index')}}" text='Analytics' icon='bi-bar-chart' />
+        <x-admin.sidebar-tabs href="{{route('admin.usersAccounts.index')}}" text='Users' icon='bi-people' />
         @endcan
         @can('manage.settings')
         <x-admin.sidebar-tabs href="{{route('admin.settings')}}" text='Settings' icon='bi-gear' />
@@ -38,6 +56,9 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top top-navbar">
         <div class="container-fluid">
             <button class="btn btn-outline-primary d-lg-none" id="sidebarToggle"><i class="bi bi-list"></i></button>
+            @if(auth()->user()->status->label() === "Disable")
+            <h6 class="text-danger">Your account is unverified !</h6>
+            @endif
             <ul class="navbar-nav ms-auto align-items-center">
                 <li class="nav-item dropdown me-3">
                     <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
@@ -70,6 +91,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{asset('js/admin.js')}}"></script>
+    @stack('scripts')
 </body>
 
 </html>

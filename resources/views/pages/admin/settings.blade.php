@@ -124,7 +124,7 @@
                             <select class="form-control" name="guard_name" id="">
                                 <option value="0">Select Guard</option>
                                 <option value="web">WEB</option>
-                                <option value="API">API</option>
+                                <option value="api">API</option>
                             </select>
                         </div>
                         <div class="mb-3">
@@ -177,7 +177,7 @@
                             <select class="form-control" name="guard_name" id="">
                                 <option value="0">Select Guard</option>
                                 <option value="web">WEB</option>
-                                <option value="API">API</option>
+                                <option value="api">API</option>
                             </select>
                         </div>
                         <div class="mb-3">
@@ -244,6 +244,7 @@
                     <tr>
                         <th>S.No</th>
                         <th>Name</th>
+                        <th>Guard name</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -252,6 +253,7 @@
                     <tr>
                         <td>{{$index + 1}}</td>
                         <td>{{$permission->name}}</td>
+                        <td>{{$permission->guard_name}}</td>
                         <td>
                             <button class="btn btn-sm btn-outline-secondary getPermission" permissionId='{{$permission->id}}'><i class="bi bi-pencil"></i></button>
                             <button class="btn btn-sm btn-outline-danger showDeletePermission" permissionId='{{$permission->id}}'><i class="bi bi-trash"></i></button>
@@ -259,7 +261,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="3">
+                        <td colspan="4">
                             <p class="text-center">No permission exists</p>
                         </td>
                     </tr>
@@ -284,6 +286,7 @@
                     <tr>
                         <th>S.No</th>
                         <th>Name</th>
+                        <th>Guard name</th>
                         <th>Permissions</th>
                         <th>Actions</th>
                     </tr>
@@ -293,6 +296,7 @@
                     <tr>
                         <td>{{$index + 1}}</td>
                         <td>{{$role->name}}</td>
+                        <td>{{$role->guard_name}}</td>
                         <td>
                             <ul>
                                 @foreach($role->permissions as $permission)
@@ -307,7 +311,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="4" class="text-center">
+                        <td colspan="5" class="text-center">
                             <p> Roles is not added yet..</p>
                         </td>
                     </tr>

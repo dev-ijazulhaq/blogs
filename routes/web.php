@@ -1,9 +1,12 @@
 <?php
 
+use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\CommentController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SettingsController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Middleware\HasAccess;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
@@ -56,6 +59,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified'])->group(
     Route::get('settings', [SettingsController::class, 'index'])->middleware('HasAccess:manage.settings')->name('settings');
     Route::resource('permissions', PermissionController::class)->middleware('HasAccess:manage.settings');
     Route::resource('roles', RoleController::class)->middleware('HasAccess:manage.settings');
-    Route::view('users', 'pages.admin.users')->name('users')->middleware('HasAccess:manage.users');
     Route::resource('categories', CategoryController::class)->middleware('HasAccess:manage.categories');
+    Route::resource('usersAccounts', UserController::class)->middleware('HasAccess:manage.users');
+    Route::patch('usersAccounts/{usersAccount}/{status}', [UserController::class, 'enableDisable'])->middleware('HasAccess:manage.users')->name('usersAccounts.enableDisable');
+    Route::resource('blogs', BlogController::class)->middleware('HasAccess:manage.blogs');
+    Route::resource('comments', CommentController::class)->middleware('HasAccess:manage.comments');
 });

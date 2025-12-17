@@ -19,9 +19,6 @@ $(document).on('click','#accountRegistration',function(){
                 $.each(errors, function(key, message){
                     form.find("#response_"+key).text(message);
                 });
-            }else{
-                console.log(xhr.responseJSON);
-                alert('Somethings went wrong.');
             }
         }
     });
