@@ -77,4 +77,9 @@ class CategoryService
         }
         return $this->category->delete($id);
     }
+
+    public function getAllCategory()
+    {
+        return $this->category->getAllCategory();
+    }
 }

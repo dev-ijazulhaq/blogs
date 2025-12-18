@@ -23,4 +23,9 @@ class Blog extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
+    public function scopePublished($query)
+    {
+        return $query->where('is_publish', true);
+    }
 }

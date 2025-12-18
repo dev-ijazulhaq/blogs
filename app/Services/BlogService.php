@@ -5,9 +5,7 @@ namespace App\Services;
 use App\Events\BlogPublishEvent;
 use App\Repositories\Interfaces\BlogRepositoryInterface;
 use App\Traits\HandleImage;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 
 class BlogService
 {
@@ -80,5 +78,15 @@ class BlogService
         $blog = $this->blogInterface->actionOnBlog($newStatus, $id);
         event(new BlogPublishEvent($blog, $blog->user));
         return $blog;
+    }
+
+    public function homeScreenBlogs()
+    {
+        return $this->blogInterface->homeScreenBlogs();
+    }
+
+    public function blogTitles()
+    {
+        return $this->blogInterface->blogTitles();
     }
 }

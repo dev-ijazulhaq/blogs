@@ -6,6 +6,7 @@ use App\Models\Blog;
 use App\Models\Category;
 use App\Repositories\Interfaces\BlogRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 
 class BlogRepository extends BaseRepository implements BlogRepositoryInterface
 {
@@ -35,5 +36,23 @@ class BlogRepository extends BaseRepository implements BlogRepositoryInterface
         $blog = $this->model->findOrFail($id);
         $blog->update(['is_publish' => $status]);
         return $blog;
+    }
+
+    public function homeScreenBlogs(): Collection
+    {
+        return $this->model->published()
+            ->with(['user:id,name', 'category:id,name'])
+            ->limit(6)
+            ->latest()
+            ->get();
+    }
+
+    public function blogTitles()
+    {
+        return $this->model->published()
+            ->select(['id', 'title'])
+            ->latest()
+            ->limit(6)
+            ->get();
     }
 }

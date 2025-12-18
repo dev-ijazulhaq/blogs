@@ -8,15 +8,17 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Web\CategoriesController;
+use App\Http\Controllers\Web\HomeController;
 use App\Http\Middleware\HasAccess;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('/')->name('web.')->group(function () {
-    Route::view('/', 'pages.web.index')->name('home');
-    Route::view('blog', 'pages.web.blog')->name('blog');
-    Route::view('categories', 'pages.web.categories')->name('categories');
+    Route::get('/', [HomeController::class, 'homeScreenBlogs'])->name('home');
+    Route::get('blog/{blog}/details', [HomeController::class, 'blogDetails'])->name('blog.show');
+    Route::get('categories', [CategoriesController::class, 'getAllCategories'])->name('categories');
     Route::view('about', 'pages.web.about')->name('about');
     Route::view('contact', 'pages.web.contact')->name('contact');
 });
