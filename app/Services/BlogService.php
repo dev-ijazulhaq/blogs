@@ -6,6 +6,7 @@ use App\Events\BlogPublishEvent;
 use App\Repositories\Interfaces\BlogRepositoryInterface;
 use App\Traits\HandleImage;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class BlogService
 {
@@ -76,13 +77,16 @@ class BlogService
     public function actionOnBlog(string|int $newStatus, string|int $id)
     {
         $blog = $this->blogInterface->actionOnBlog($newStatus, $id);
+        Cache::forget('homeScreenBlogs');
         event(new BlogPublishEvent($blog, $blog->user));
         return $blog;
     }
 
     public function homeScreenBlogs()
     {
-        return $this->blogInterface->homeScreenBlogs();
+        return Cache::remember('homeScreenBlogs', 600, function () {
+            return $this->blogInterface->homeScreenBlogs();
+        });
     }
 
     public function blogTitles()
