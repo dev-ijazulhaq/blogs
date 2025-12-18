@@ -93,4 +93,9 @@ class BlogService
     {
         return $this->blogInterface->blogTitles();
     }
+
+    public function blogsPage()
+    {
+        return $this->blogInterface->blogsPage();
+    }
 }

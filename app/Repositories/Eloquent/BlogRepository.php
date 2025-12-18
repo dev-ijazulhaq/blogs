@@ -55,4 +55,9 @@ class BlogRepository extends BaseRepository implements BlogRepositoryInterface
             ->limit(6)
             ->get();
     }
+
+    public function blogsPage()
+    {
+        return $this->model->published()->with(['user:id,name', 'category:id,name'])->latest()->paginate(6);
+    }
 }

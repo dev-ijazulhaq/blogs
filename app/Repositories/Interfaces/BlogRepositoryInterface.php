@@ -12,4 +12,5 @@ interface BlogRepositoryInterface extends BaseRepositoryInterface
     public function actionOnBlog(string|int $status, string|int $id);
     public function homeScreenBlogs(): Collection;
     public function blogTitles();
+    public function blogsPage();
 }

@@ -27,4 +27,10 @@ class HomeController extends Controller
         $recentTitles = $this->blogService->blogTitles();
         return view('pages.web.blog', compact('blog', 'recentTitles'));
     }
+
+    public function blogsPage()
+    {
+        $blogs = $this->blogService->blogsPage();
+        return view('pages.web.blogs', compact('blogs'));
+    }
 }

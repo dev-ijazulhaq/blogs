@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('/')->name('web.')->group(function () {
     Route::get('/', [HomeController::class, 'homeScreenBlogs'])->name('home');
+    Route::get('blogs', [HomeController::class, 'blogsPage'])->name('blogs');
     Route::get('blog/{blog}/details', [HomeController::class, 'blogDetails'])->name('blog.show');
     Route::get('categories', [CategoriesController::class, 'getAllCategories'])->name('categories');
     Route::view('about', 'pages.web.about')->name('about');

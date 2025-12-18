@@ -32,5 +32,62 @@
         </div>
     </div>
 </section>
+<!-- Comments Section -->
+<section class="py-5 border-top">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+
+                <h4 class="mb-4">Comments</h4>
+
+                <!-- Add Comment -->
+                <div class="d-flex mb-4">
+                    <img src="https://ui-avatars.com/api/?name=User" class="rounded-circle me-3" width="45" height="45" alt="User">
+                    <div class="flex-grow-1">
+                        <textarea class="form-control mb-2" rows="2" placeholder="Write a comment..."></textarea>
+                        <button class="btn btn-primary btn-sm">Post Comment</button>
+                    </div>
+                </div>
+
+                <!-- Comment Item -->
+                <div class="d-flex mb-4">
+                    <img src="https://ui-avatars.com/api/?name=John+Doe" class="rounded-circle me-3" width="45" height="45" alt="User">
+                    <div>
+                        <div class="bg-light p-3 rounded">
+                            <strong>John Doe</strong>
+                            <p class="mb-1">
+                                This is a really informative blog. Thanks for sharing!
+                            </p>
+                        </div>
+                        <div class="small text-muted mt-1">
+                            <a href="#" class="me-3 text-decoration-none">Like</a>
+                            <a href="#" class="me-3 text-decoration-none">Reply</a>
+                            <span>2 hours ago</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reply Comment -->
+                <div class="d-flex ms-5 mb-4">
+                    <img src="https://ui-avatars.com/api/?name=Sarah+Ali" class="rounded-circle me-3" width="40" height="40" alt="User">
+                    <div>
+                        <div class="bg-light p-3 rounded">
+                            <strong>Sarah Ali</strong>
+                            <p class="mb-1">
+                                Totally agree with you 👍
+                            </p>
+                        </div>
+                        <div class="small text-muted mt-1">
+                            <a href="#" class="me-3 text-decoration-none">Like</a>
+                            <a href="#" class="text-decoration-none">Reply</a>
+                            <span>1 hour ago</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
 
 @endSection
