@@ -1,10 +1,30 @@
 @extends('layouts/app')
 @section('mainContent')
+<div class="modal fade" id="loginNotificationModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="">Login required</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="text-center">You are not login, please login to your account..!</p>
+            </div>
+            <div class="modal-footer">
+                <div class="footerBtn">
+                    <a href="{{ route('login') }}">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Login</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Hero Section -->
 <section class="hero-banner text-center">
     <div class="container hero-content">
-        <h1>{{$blog->title}} . {{$blog->category->name}}</h1>
-        <p>By {{$blog->user->name}} • {{$blog->created_at->format('M d, Y')}}</p>
+        <h1>{{$blogDetails->title}} . {{$blogDetails->category->name}}</h1>
+        <p>By {{$blogDetails->user->name}} • {{$blogDetails->created_at->format('M d, Y')}}</p>
     </div>
 </section>
 <!-- Blog Content -->
@@ -13,9 +33,9 @@
         <div class="row g-5">
             <!-- Main Content -->
             <div class="col-lg-8 blog-content">
-                <img src="{{asset('storage/Blogs/'.$blog->image)}}" class="img-fluid mb-4" alt="Blog Banner">
+                <img src="{{asset('storage/Blogs/'.$blogDetails->image)}}" class="img-fluid mb-4" alt="Blog Banner">
                 <p>
-                    {{$blog->description}}
+                    {{$blogDetails->description}}
                 </p>
             </div>
             <!-- Sidebar -->
@@ -23,8 +43,8 @@
                 <div class="sidebar">
                     <h5>Recent Posts</h5>
                     <ul class="list-unstyled">
-                        @foreach($recentTitles as $titles)
-                        <li><a href="{{route('web.blog.show', $titles->id)}}">→ {{$titles->title}}</a></li>
+                        @foreach($blogTitles as $title)
+                        <li><a href="{{ route('web.blog.show',$title->id) }}">→ {{$title->title}}</a></li>
                         @endforeach
                     </ul>
                 </div>
@@ -43,47 +63,59 @@
                 <!-- Add Comment -->
                 <div class="d-flex mb-4">
                     <img src="https://ui-avatars.com/api/?name=User" class="rounded-circle me-3" width="45" height="45" alt="User">
-                    <div class="flex-grow-1">
-                        <textarea class="form-control mb-2" rows="2" placeholder="Write a comment..."></textarea>
-                        <button class="btn btn-primary btn-sm">Post Comment</button>
+                    <div class="w-100">
+                        <form id='commentForm' action='{{route("web.webComments.store")}}'>
+                            @csrf
+                            <input type="hidden" name='user_id' id='user_id' value="{{auth()->id()}}">
+                            <input type="hidden" name='blog_id' value="{{$blogDetails->id}}">
+                            <input type="hidden" name="parent_id" value="">
+                            <label for="" class="text-danger text-sm" id='errorResponseInComment'></label>
+                            <label for="" class="text-success text-sm" id='successResponseInComment'></label>
+                            <textarea class="form-control mb-2" rows="2" placeholder="Write a comment..." name="comment"></textarea>
+                        </form>
+                        <button class="btn btn-primary btn-sm" id='postComment'>Post Comment</button>
                     </div>
                 </div>
-
-                <!-- Comment Item -->
+                @foreach($blogDetails->blogComments as $comment)
                 <div class="d-flex mb-4">
-                    <img src="https://ui-avatars.com/api/?name=John+Doe" class="rounded-circle me-3" width="45" height="45" alt="User">
-                    <div>
-                        <div class="bg-light p-3 rounded">
-                            <strong>John Doe</strong>
-                            <p class="mb-1">
-                                This is a really informative blog. Thanks for sharing!
-                            </p>
-                        </div>
-                        <div class="small text-muted mt-1">
-                            <a href="#" class="me-3 text-decoration-none">Like</a>
-                            <a href="#" class="me-3 text-decoration-none">Reply</a>
-                            <span>2 hours ago</span>
-                        </div>
-                    </div>
-                </div>
+                    <img src="https://ui-avatars.com/api/?name=User"
+                        class="rounded-circle me-3" width="45" height="45">
 
-                <!-- Reply Comment -->
-                <div class="d-flex ms-5 mb-4">
-                    <img src="https://ui-avatars.com/api/?name=Sarah+Ali" class="rounded-circle me-3" width="40" height="40" alt="User">
                     <div>
                         <div class="bg-light p-3 rounded">
-                            <strong>Sarah Ali</strong>
-                            <p class="mb-1">
-                                Totally agree with you 👍
-                            </p>
+                            <strong>Visitor</strong>
+                            <p class="mb-1">{{ $comment->comment }}</p>
                         </div>
+
                         <div class="small text-muted mt-1">
-                            <a href="#" class="me-3 text-decoration-none">Like</a>
-                            <a href="#" class="text-decoration-none">Reply</a>
-                            <span>1 hour ago</span>
+                            <a href="#" class="me-3">Like</a>
+                            <a href="#" class="me-3">Reply</a>
+                            <span>{{ $comment->created_at->diffForHumans() }}</span>
                         </div>
+
+                        {{-- Replies --}}
+                        @foreach($comment->replies as $reply)
+                        <div class="d-flex ms-5 mt-3">
+                            <img src="https://ui-avatars.com/api/?name=User"
+                                class="rounded-circle me-3" width="40" height="40">
+
+                            <div>
+                                <div class="bg-light p-3 rounded">Visitor
+                                    <p class="mb-1">{{ $reply->comment }}</p>
+                                </div>
+
+                                <div class="small text-muted mt-1">
+                                    <a href="#" class="me-3">Like</a>
+                                    <a href="#">Reply</a>
+                                    <span>{{ $reply->created_at->diffForHumans() }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        @endforeach
                     </div>
                 </div>
+                @endforeach
+
 
             </div>
         </div>

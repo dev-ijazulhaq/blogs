@@ -47,13 +47,11 @@ class BlogRepository extends BaseRepository implements BlogRepositoryInterface
             ->get();
     }
 
-    public function blogTitles()
+    public function blogDetails(string|int $blogId): array
     {
-        return $this->model->published()
-            ->select(['id', 'title'])
-            ->latest()
-            ->limit(6)
-            ->get();
+        $blogDetails = $this->model->with(['blogComments.replies'])->findOrFail($blogId);
+        $blogTitles = $this->model->select(['id', 'title'])->published()->limit(6)->latest()->get();
+        return $blogDetails = ['blogDetails' => $blogDetails, 'blogTitles' => $blogTitles];
     }
 
     public function blogsPage()

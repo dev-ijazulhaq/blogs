@@ -15,8 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('blog_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignId('user_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
-            $table->string('comment', 264);
-            $table->enum('is_publish', [0, 1])->default(0);
+            $table->foreignId('parent_id')->nullable()->constrained('comments')->cascadeOnUpdate()->cascadeOnDelete();
+            $table->text('comment');
+            $table->tinyInteger('status')->default(1);
             $table->timestamps();
         });
     }

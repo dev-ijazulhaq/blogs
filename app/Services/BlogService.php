@@ -89,9 +89,9 @@ class BlogService
         });
     }
 
-    public function blogTitles()
+    public function blogDetails(string|int $blogId): array
     {
-        return $this->blogInterface->blogTitles();
+        return $this->blogInterface->blogDetails($blogId);
     }
 
     public function blogsPage()

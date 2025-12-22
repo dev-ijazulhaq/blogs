@@ -22,10 +22,13 @@ class HomeController extends Controller
         return view('pages.web.index', compact('blogs'));
     }
 
-    public function blogDetails(Blog $blog)
+    public function blogDetails($blogId)
     {
-        $recentTitles = $this->blogService->blogTitles();
-        return view('pages.web.blog', compact('blog', 'recentTitles'));
+
+        $data = $this->blogService->blogDetails($blogId);
+        $blogDetails = $data['blogDetails'];
+        $blogTitles = $data['blogTitles'];
+        return view('pages.web.blog', compact('blogDetails', 'blogTitles'));
     }
 
     public function blogsPage()

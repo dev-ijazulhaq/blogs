@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Web\CategoriesController;
+use App\Http\Controllers\Web\CommentController as WebCommentController;
 use App\Http\Controllers\Web\HomeController;
 use App\Http\Middleware\HasAccess;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
@@ -22,6 +23,7 @@ Route::prefix('/')->name('web.')->group(function () {
     Route::get('categories', [CategoriesController::class, 'getAllCategories'])->name('categories');
     Route::view('about', 'pages.web.about')->name('about');
     Route::view('contact', 'pages.web.contact')->name('contact');
+    Route::resource('webComments', WebCommentController::class)->middleware('HasAccess:manage.comments');
 });
 
 Route::view('login', 'pages.auth.login')->name('login');
