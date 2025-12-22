@@ -98,4 +98,9 @@ class BlogService
     {
         return $this->blogInterface->blogsPage();
     }
+
+    public function apiHomeScreen()
+    {
+        return $this->blogInterface->homeScreenBlogs();
+    }
 }
